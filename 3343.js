@@ -7,44 +7,35 @@ let [qtdTitas, vidaMuralha] = pegarValores(lines.shift())
 let tamTitas = lines.shift().split('')
 let [p, m, g] = pegarValores(lines.shift())
 
+let muralhas = []
+let dano = 0
+muralhas.push(vidaMuralha)
 
-const vidaMuralhaConst = vidaMuralha
-let titaAtual
-let cont=0
-let flag = true
-let dano
-while(true)
+for (let j = 0; j < qtdTitas; j++) 
 {
-    if (flag)
-    {
-        titaAtual = tamTitas.shift()
-    }
+    let titaAtual = tamTitas[j]
+    let ultimaMuralha = muralhas.length - 1
     titaAtual == 'P' ? dano = p : null
     titaAtual == 'M' ? dano = m : null
     titaAtual == 'G' ? dano = g : null
-    if (vidaMuralha >= dano){
-        vidaMuralha -= dano
-        flag = true
+
+    for (let i = 0; i < muralhas.length; i++) {
+        // if (titaAtual == 'P' && dano < muralhas[i]){
+        //     muralhas.splice(i, 1)
+        //     break
+        // }
+        if (dano <= muralhas[i]){
+            muralhas[i] -= dano
+            if (muralhas[i] <= 0) {
+                muralhas.splice(i, 1)
+            }
+            break
+        }
+        else {
+            if (i == (ultimaMuralha)){
+                muralhas.push(vidaMuralha)
+            }
+        }
     }
-    else {
-        vidaMuralha = vidaMuralhaConst
-        cont++
-        flag = false
-        // console.log('Um tita passou a muralha');
-    }
-    console.log('vida', vidaMuralha);
-    console.log(titaAtual);
-    if (tamTitas.length <= 0) break
 }
-console.log(cont);
-
-//       M     G    G     P     G    G     G     P
-// 20 -> 12 -> 2 -> 20 -> 17 -> 7 -> 20 -> 10 -> 3
-
-// -M-G-G-P-G-G-G-P
-//       M     G     G          G     P     10         G     G          G     P
-// 20 -> 12 -> 2 -> -8 -> 20 -> 10 -> 7 -> -3 -> 20 -> 10 -> 0 -> 20 -> 10 -> 7
-
-// GPMP
-
-// 6 -> 1 -> 6 -> 3 -> 6 -> 2 -> 6
+console.log(muralhas.length);
